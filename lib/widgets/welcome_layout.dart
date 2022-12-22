@@ -33,8 +33,6 @@ class WelcomeLayout extends StatelessWidget {
                     fit: BoxFit.cover,
                     height: imageHeight,
                     width: double.infinity,
-                    color: Colors.blue[800]?.withOpacity(0.3),
-                    colorBlendMode: BlendMode.darken,
                   ),
                 ),
                 if (showBackButton)

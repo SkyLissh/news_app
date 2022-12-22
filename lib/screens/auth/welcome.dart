@@ -12,7 +12,7 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: WelcomeLayout(
         imageUrl:
-            "https://images.unsplash.com/photo-1611159063981-b8c8c4301869?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mzh8fG5ld3N8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1504464920281-04959fd089db?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
         child: Column(children: [
           Text(
             "Keep Up With The Latest News",
