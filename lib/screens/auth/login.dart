@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:go_router/go_router.dart";
 import "package:provider/provider.dart";
 
 import "package:news_app/constants/constants.dart";
@@ -23,16 +24,19 @@ class _LogInScreenState extends State<LogInScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final user = await context.read<AuthNotifier>().logIn(
+      final success = await context.read<AuthNotifier>().logIn(
             email: _email!,
             password: _password!,
           );
 
-      if (user == null) {
+      if (!success) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           _formKey.currentState!.validate();
         });
       }
+
+      if (!mounted) return;
+      context.pushReplacement("/");
     }
   }
 

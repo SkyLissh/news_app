@@ -1,13 +1,18 @@
 import "package:state_notifier/state_notifier.dart";
-
 import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_database/firebase_database.dart";
+
+import "package:news_app/models/models.dart" as models;
 
 class AuthState {
+  final models.User? user;
+
   final bool invalidEmailOrPassword;
   final bool emailInUse;
   final bool weakPassword;
 
   AuthState({
+    this.user,
     this.invalidEmailOrPassword = false,
     this.emailInUse = false,
     this.weakPassword = false,
@@ -16,21 +21,31 @@ class AuthState {
 
 class AuthNotifier extends StateNotifier<AuthState> {
   final _auth = FirebaseAuth.instance;
+  final _db = FirebaseDatabase.instance;
 
   AuthNotifier() : super(AuthState());
 
-  Future<UserCredential?> signUp({
+  Future<bool> signUp({
     required String name,
     required String email,
     required String password,
   }) async {
     try {
-      final user = await _auth.createUserWithEmailAndPassword(
+      final cred = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      return user;
+      final user = models.User.fromFirebaseUser(
+        user: cred.user!,
+        name: name,
+      );
+
+      await _db.ref("users/${user.id}").set(user.toJson());
+
+      state = AuthState(user: user);
+
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         state = AuthState(weakPassword: true);
@@ -38,19 +53,28 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = AuthState(emailInUse: true);
       }
 
-      return null;
+      return false;
     }
   }
 
-  Future<UserCredential?> logIn(
-      {required String email, required String password}) async {
+  Future<bool> logIn({required String email, required String password}) async {
     try {
-      final user = await _auth.signInWithEmailAndPassword(
+      final cred = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      return user;
+      final ref = _db.ref("users/${cred.user!.uid}");
+
+      ref.onValue.listen((event) {
+        final user = models.User.fromJson(
+          Map<String, dynamic>.from(event.snapshot.value as dynamic),
+        );
+
+        state = AuthState(user: user);
+      });
+
+      return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
         state = AuthState(invalidEmailOrPassword: true);
@@ -58,8 +82,26 @@ class AuthNotifier extends StateNotifier<AuthState> {
         state = AuthState(invalidEmailOrPassword: true);
       }
 
-      return null;
+      return false;
     }
+  }
+
+  Future<bool> getUser() async {
+    final user = _auth.currentUser;
+
+    if (user != null) {
+      final ref = _db.ref("users/${user.uid}");
+
+      ref.onValue.listen((event) {
+        final user = models.User.fromJson(
+          Map<String, dynamic>.from(event.snapshot.value as dynamic),
+        );
+
+        state = AuthState(user: user);
+      });
+    }
+
+    return user != null;
   }
 
   void resetInvalid() {
