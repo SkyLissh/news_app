@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 import "package:news_app/constants/constants.dart";
+import "package:news_app/providers/providers.dart";
 import "package:news_app/widgets/widgets.dart";
 
 class SignUpScreen extends StatefulWidget {
@@ -13,9 +15,26 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  void _onSubmit() {
+  // Field values
+  String? _name;
+  String? _email;
+  String? _password;
+
+  void _onSubmit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+
+      final user = await context.read<AuthNotifier>().signUp(
+            name: _name!,
+            email: _email!,
+            password: _password!,
+          );
+
+      if (user == null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _formKey.currentState!.validate();
+        });
+      }
     }
   }
 
@@ -42,11 +61,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               const SizedBox(height: 30.0),
-              const NameField(),
+              NameField(onSaved: (value) => _name = value),
               const SizedBox(height: 20.0),
-              const EmailField(),
+              EmailField(onSaved: (value) => _email = value),
               const SizedBox(height: 20.0),
-              const PasswordField(),
+              PasswordField(onSaved: (value) => _password = value),
               const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: _onSubmit,

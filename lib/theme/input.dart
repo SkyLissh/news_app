@@ -13,7 +13,15 @@ class NewsInputTheme {
   static InputDecorationTheme _theme() {
     return InputDecorationTheme(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      enabledBorder: _border.copyWith(borderSide: BorderSide.none),
+      enabledBorder: MaterialStateProperty.resolveWith(
+        (states) => _border.copyWith(
+          borderSide: BorderSide(
+            color: states.contains(MaterialState.focused)
+                ? Colors.blue[800]!
+                : Colors.blueGrey[400]!,
+          ),
+        ),
+      ).resolve(<MaterialState>{}),
       border: _border,
       errorBorder:
           _border.copyWith(borderSide: BorderSide(color: Colors.red[800]!)),
