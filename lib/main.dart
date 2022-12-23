@@ -29,6 +29,9 @@ class MyApp extends StatelessWidget {
         StateNotifierProvider<AuthNotifier, AuthState>(
           create: (_) => AuthNotifier(),
         ),
+        StateNotifierProvider<NewsNotifier, NewsState>(
+          create: (_) => NewsNotifier(),
+        ),
       ],
       child: MaterialApp.router(
         title: "News App",
