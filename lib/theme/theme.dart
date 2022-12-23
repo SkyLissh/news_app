@@ -24,6 +24,8 @@ class NewsTheme {
         subtitle1: kTextNormal,
         button: kTextNormal.copyWith(color: Colors.white),
       ),
+      splashColor: Colors.blue[800]!.withOpacity(0.2),
+      highlightColor: Colors.blue[800]!.withOpacity(0.2),
     );
   }
 }

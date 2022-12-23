@@ -28,6 +28,7 @@ class _BottomBarState extends State<BottomBar> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
+      elevation: 0,
       onTap: _onTap,
       showSelectedLabels: false,
       showUnselectedLabels: false,
