@@ -86,10 +86,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  Future<void> logOut() async {
+    await _db.goOffline();
+    await _auth.signOut();
+    state = AuthState();
+  }
+
   Future<bool> getUser() async {
     final user = _auth.currentUser;
 
-    if (user != null) {
+    if (user != null && state.user == null) {
       final ref = _db.ref("users/${user.uid}");
 
       ref.onValue.listen((event) {

@@ -36,7 +36,8 @@ class _LogInScreenState extends State<LogInScreen> {
       }
 
       if (!mounted) return;
-      context.pushReplacement("/");
+      context.read<AuthNotifier>().resetInvalid();
+      context.go("/");
     }
   }
 

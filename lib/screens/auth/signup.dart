@@ -40,7 +40,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
 
       if (!mounted) return;
-      context.pushReplacement("/");
+      context.read<AuthNotifier>().resetInvalid();
+      context.go("/");
     }
   }
 
