@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
-import "package:provider/provider.dart";
+import 'package:news_app/widgets/categories.dart';
 
-import "package:news_app/providers/providers.dart";
 import "package:news_app/widgets/widgets.dart";
 
 class HomeScreen extends StatelessWidget {
@@ -9,17 +8,26 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final country = context.select((NewsState n) => n.country);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: const Text("Home", style: TextStyle(color: Colors.black)),
-        actions: [CountryButton(country)],
+        title: Text(
+          "Home",
+          style: TextStyle(
+            color: Colors.blue[800],
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.2,
+          ),
+        ),
+        actions: const [CountryButton()],
       ),
-      body: Center(
-        child: Text("Home: $country"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: const [
+            Categories(),
+          ],
+        ),
       ),
     );
   }

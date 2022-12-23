@@ -7,11 +7,9 @@ import "country_icon.dart";
 import "country_list.dart";
 
 class CountryButton extends StatefulWidget {
-  final String country;
   final double size;
 
-  const CountryButton(this.country, {Key? key, this.size = 30})
-      : super(key: key);
+  const CountryButton({Key? key, this.size = 30}) : super(key: key);
 
   @override
   State<CountryButton> createState() => _CountryButtonState();
@@ -35,10 +33,12 @@ class _CountryButtonState extends State<CountryButton> {
 
   @override
   Widget build(BuildContext context) {
+    final country = context.select((NewsState n) => n.country);
+
     return IconButton(
       onPressed: () => _onPressed(context),
       splashRadius: 24,
-      icon: CountryIcon(widget.country, size: widget.size),
+      icon: CountryIcon(country, size: widget.size),
     );
   }
 }

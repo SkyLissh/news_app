@@ -3,8 +3,9 @@ import "package:state_notifier/state_notifier.dart";
 
 class NewsState {
   final String country;
+  final String category;
 
-  NewsState(this.country);
+  NewsState(this.country, {this.category = "general"});
 }
 
 class NewsNotifier extends StateNotifier<NewsState> {
@@ -14,6 +15,10 @@ class NewsNotifier extends StateNotifier<NewsState> {
   NewsNotifier() : super(NewsState(_country));
 
   void setCountry(String country) {
-    state = NewsState(country);
+    state = NewsState(country, category: state.category);
+  }
+
+  void setCategory(String category) {
+    state = NewsState(state.country, category: category);
   }
 }
