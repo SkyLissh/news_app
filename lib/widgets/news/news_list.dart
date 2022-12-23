@@ -45,7 +45,7 @@ class _NewsListState extends State<NewsList> {
   @override
   Widget build(BuildContext context) {
     final news = context.select((NewsState n) => n.news);
-    // final hasMore = context.select((NewsState n) => n.hasMore);
+    final hasMore = context.select((NewsState n) => n.hasMore);
 
     if (news.isEmpty) {
       return const Center(
@@ -61,18 +61,19 @@ class _NewsListState extends State<NewsList> {
         itemBuilder: (context, index) {
           final article = news[index];
 
-          // TODO: Add a loading indicator when there are more news to load
-          // if (index == news.length - 1 && hasMore) {
-          //   return Column(
-          //     children: [
-          //       NewsCard(article: article),
-          //       const SizedBox(height: 16),
-          //       const Center(
-          //         child: CircularProgressIndicator(),
-          //       ),
-          //     ],
-          //   );
-          // }
+          if (index == news.length - 1 && hasMore) {
+            return Column(
+              children: [
+                NewsCard(article: article),
+                const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              ],
+            );
+          }
 
           return NewsCard(article: article);
         },

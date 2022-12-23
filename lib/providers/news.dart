@@ -23,7 +23,6 @@ class NewsNotifier extends StateNotifier<NewsState> {
   static final _country = _locale.countryCode!.toLowerCase();
 
   static bool _loading = false;
-  static int _maxPage = 0;
 
   NewsNotifier() : super(NewsState(_country, []));
 
@@ -37,7 +36,6 @@ class NewsNotifier extends StateNotifier<NewsState> {
 
   void _reachMaxPage() {
     _loading = false;
-    _maxPage = state.page;
 
     state = NewsState(
       state.country,
@@ -49,7 +47,7 @@ class NewsNotifier extends StateNotifier<NewsState> {
   }
 
   void getNews() async {
-    if (_loading || _maxPage == state.page) return;
+    if (_loading || !state.hasMore) return;
 
     final url = Uri.https("newsapi.org", "/v2/top-headlines", {
       "country": state.country,
@@ -72,8 +70,6 @@ class NewsNotifier extends StateNotifier<NewsState> {
     }
 
     final data = NewsResponse.fromJson(jsonDecode(res.body));
-
-    print("News: ${data.articles.length}");
 
     if (data.articles.isEmpty) {
       _reachMaxPage();

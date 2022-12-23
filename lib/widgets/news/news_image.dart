@@ -14,7 +14,7 @@ class NewsImage extends StatelessWidget {
 
     try {
       final res = await http.get(Uri.parse(url!));
-      if (res.statusCode == 200) return true;
+      if (res.statusCode != 200) return false;
 
       final contentType = res.headers["content-type"];
       if (contentType != null && contentType.contains("image")) return true;
