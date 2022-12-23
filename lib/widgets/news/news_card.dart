@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 
 import "package:news_app/models/models.dart";
-import 'package:news_app/widgets/news/news.dart';
+import "package:url_launcher/url_launcher.dart";
+
+import "package:news_app/widgets/widgets.dart";
 
 class NewsCard extends StatelessWidget {
   final Article article;
@@ -11,8 +13,18 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(children: [
-        Padding(
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: () async {
+          if (!await launchUrl(Uri.parse(article.url))) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Could not open article"),
+              ),
+            );
+          }
+        },
+        child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +53,7 @@ class NewsCard extends StatelessWidget {
             ],
           ),
         ),
-      ]),
+      ),
     );
   }
 }

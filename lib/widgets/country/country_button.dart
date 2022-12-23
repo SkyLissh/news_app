@@ -16,7 +16,7 @@ class CountryButton extends StatefulWidget {
 }
 
 class _CountryButtonState extends State<CountryButton> {
-  void _onPressed(BuildContext context) async {
+  void _onPressed(BuildContext context, String current) async {
     String? country = await showModalBottomSheet(
       useRootNavigator: true,
       shape: const RoundedRectangleBorder(
@@ -26,7 +26,7 @@ class _CountryButtonState extends State<CountryButton> {
       builder: (_) => const CountryList(),
     );
 
-    if (country == null || !mounted) return;
+    if (country == null || !mounted || country == current) return;
 
     context.read<NewsNotifier>().setCountry(country);
   }
@@ -36,7 +36,7 @@ class _CountryButtonState extends State<CountryButton> {
     final country = context.select((NewsState n) => n.country);
 
     return IconButton(
-      onPressed: () => _onPressed(context),
+      onPressed: () => _onPressed(context, country),
       splashRadius: 24,
       icon: CountryIcon(country, size: widget.size),
     );
