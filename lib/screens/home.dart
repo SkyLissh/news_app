@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import 'package:news_app/widgets/categories.dart';
 
 import "package:news_app/widgets/widgets.dart";
 
@@ -22,12 +21,8 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: const [CountryButton()],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: const [
-            Categories(),
-          ],
-        ),
+      body: Column(
+        children: const [Categories(), Expanded(child: NewsList())],
       ),
     );
   }

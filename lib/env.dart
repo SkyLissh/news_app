@@ -4,6 +4,6 @@ part "env.g.dart";
 
 @Envied()
 abstract class Env {
-  @EnviedField(varName: "NEWS_KEY", obfuscate: true)
-  static final newsKey = _Env.newsKey;
+  @EnviedField(varName: "NEWSAPI_KEY", obfuscate: true)
+  static final newsApiKey = _Env.newsApiKey;
 }

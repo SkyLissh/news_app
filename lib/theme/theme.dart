@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 import 'package:news_app/constants/constants.dart';
 
+import "card.dart";
 import "chip.dart";
 import "elevated_button.dart";
 import "input.dart";
@@ -22,6 +23,7 @@ class NewsTheme {
       textButtonTheme: NewsTextButtonTheme.theme,
       inputDecorationTheme: NewsInputTheme.theme,
       chipTheme: NewsChipTheme.theme,
+      cardTheme: NewsCardTheme.theme,
       textTheme: GoogleFonts.ralewayTextTheme().copyWith(
         subtitle1: kTextNormal,
         button: kTextNormal.copyWith(color: Colors.white),
