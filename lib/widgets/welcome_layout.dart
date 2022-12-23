@@ -1,5 +1,8 @@
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 import "package:go_router/go_router.dart";
+
+import "package:news_app/providers/providers.dart";
 
 import "buttons/buttons.dart";
 
@@ -17,6 +20,11 @@ class WelcomeLayout extends StatelessWidget {
     this.imageHeight = 400.0,
   }) : super(key: key);
 
+  void _onBack(BuildContext context) {
+    context.pop();
+    context.read<AuthNotifier>().resetInvalid();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,15 +41,13 @@ class WelcomeLayout extends StatelessWidget {
                     fit: BoxFit.cover,
                     height: imageHeight,
                     width: double.infinity,
-                    color: Colors.blue[800]?.withOpacity(0.3),
-                    colorBlendMode: BlendMode.darken,
                   ),
                 ),
                 if (showBackButton)
                   Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: SquareButton(
-                      onPressed: () => context.pop(),
+                      onPressed: () => _onBack(context),
                       child: const Icon(
                         Icons.chevron_left,
                         size: 28,
